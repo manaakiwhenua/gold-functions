@@ -1,0 +1,105 @@
+# gold-functions
+#
+# Written by Benjamin Roberts, NeSI Application Support Specialist
+# Manaaki Whenua - Landcare Research
+# Copyright (C) 2019 Landcare Research New Zealand Ltd
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+function check_job_status_daemon() {
+	echo "I don't remember what I'm supposed to do here!"
+	#clean_up_and_exit 2
+}
+
+
+function clean_up_and_exit() {
+	# Do other cleanup
+	exit $1 
+}
+
+function exit_trap() {
+	exitcode=2
+	clean_up_and_exit "${exitcode}"	
+}
+
+
+function get_library_file() {
+
+	library_file=""
+	if [ ! -e "$1" ]
+	then
+		echo "Error: $1: no such file or directory" | tee /dev/stderr
+		clean_up_and_exit 2
+	elif [ ! -f "$1" ]
+	then
+		echo "Error: $1: not a file" | tee /dev/stderr
+		clean_up_and_exit 2
+	elif [ ! -r "$1" ]
+	then
+		echo "Error: $1: permission denied" | tee /dev/stderr
+		clean_up_and_exit 2
+	else
+		ldf_text=$(egrep "^[[:space:]]*ligand_data_file" "${1}") || { echo "Error: $1: ligand_data_file entry not found" | tee /dev/stderr ; clean-up_and_exit 2 ; }
+		ldf_lines=$(echo "${ldf_text}" | wc -l)
+		if [ "${ldf_lines}" -gt 1 ]
+		then
+			echo "Error: $1: Multiple ligand_data_file entries found" | tee /dev/stderr
+			clean_up_and_exit 2
+		else
+			library_file=$(echo "${ldf_text}" | awk '{ print $2 }')
+		fi
+	fi
+	
+	if [ -z "${library_file}" ]
+	then
+		echo "Error: $1: Unable to ascertain library file" | tee /dev/stderr
+		clean_up_and_exit 2
+	fi
+	echo "${library_file}"
+}
+
+
+function ligands_total() {
+
+	mol2count=0
+	sdfcount=0
+	
+	if [ ! -e "$1" ]
+	then
+		echo "Error: $1: no such file or directory" | tee /dev/stderr
+		clean_up_and_exit 2
+	elif [ ! -f "$1" ]
+	then
+		echo "Error: $1: not a file" | tee /dev/stderr
+		clean_up_and_exit 2
+	elif [ ! -r "$1" ]
+	then
+		echo "Error: $1: permission denied" | tee /dev/stderr
+		clean_up_and_exit 2
+	else
+		mol2count=$(grep "@<TRIPOS>MOLECULE" "$1" | wc -l)
+		sdfcount=$(grep "\$\$\$\$" "$1" | wc -l)
+		
+		if [ "${mol2count}" -gt 0 ]
+		then
+			echo "${mol2count}"
+		elif [ "${sdfcount}" -gt 0 ]
+		then
+			echo "${sdfcount}"
+		else
+			echo "Error: $1: Not a valid Tripos Mol2 or MDL SD file" | tee /dev/stderr
+			clean_up_and_exit 2
+		fi
+	fi
+}
