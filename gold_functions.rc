@@ -16,6 +16,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# Please direct support questions arising from use of this software,
+# especially on a NeSI computing device, to support@nesi.org.nz.
 
 function check_job_status_daemon() {
 	echo "I don't remember what I'm supposed to do here!"
