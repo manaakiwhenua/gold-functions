@@ -1,5 +1,14 @@
 # gold-functions
 
+Written by Benjamin Roberts, NeSI Application Support Specialist,
+Manaaki Whenua - Landcare Research
+Copyright (C) 2019  Landcare Research New Zealand Ltd
+
+For support queries related to this package, please contact the
+NeSI Support team at:
+
+https://support.nesi.org.nz/hc/requests/new
+
 GOLD is protein-ligand docking software developed and maintained by
 the Cambridge Crystallographic Data Centre (CCDC) in the United
 Kingdom. Its web page can be found here:

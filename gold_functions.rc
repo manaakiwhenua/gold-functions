@@ -18,7 +18,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 # Please direct support questions arising from use of this software,
-# especially on a NeSI computing device, to support@nesi.org.nz.
+# especially on a NeSI computing device, to the NeSI support team at
+# https://support.nesi.org.nz/hc/requests/new
 
 function check_job_status_daemon() {
 	echo "I don't remember what I'm supposed to do here!"
