@@ -21,12 +21,6 @@
 # especially on a NeSI computing device, to the NeSI support team at
 # https://support.nesi.org.nz/hc/requests/new
 
-function check_job_status_daemon() {
-	echo "I don't remember what I'm supposed to do here!"
-	#clean_up_and_exit 2
-}
-
-
 function clean_up_and_exit() {
 	# Do other cleanup
 	exit $1 
